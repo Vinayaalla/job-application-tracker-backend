@@ -5,7 +5,12 @@ const setupDatabase = () => {
         CREATE TABLE IF NOT EXISTS users (
             id INT AUTO_INCREMENT PRIMARY KEY,
             username VARCHAR(255) NOT NULL UNIQUE,
-            password VARCHAR(255) NOT NULL
+            password VARCHAR(255) NOT NULL,
+            dob DATE,
+            address TEXT,
+            city VARCHAR(100),
+            state VARCHAR(100),
+            country VARCHAR(100)
         );
     `;
 
