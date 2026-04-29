@@ -21,6 +21,7 @@ const setupDatabase = () => {
             role VARCHAR(255) NOT NULL,
             status VARCHAR(255) NOT NULL,
             user_id INT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         );
     `;

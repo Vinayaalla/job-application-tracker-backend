@@ -15,12 +15,12 @@ router.get("/", authMiddleware, (req, res) => {
 
 // Add a new job
 router.post("/", authMiddleware, (req, res) => {
-    const { company, role, status } = req.body;
+    const { company, role, status, created_at } = req.body;
     const userId = req.user.id;
 
     db.query(
-        "INSERT INTO jobs (company, role, status, user_id) VALUES (?, ?, ?, ?)",
-        [company, role, status, userId],
+        "INSERT INTO jobs (company, role, status,created_at, user_id) VALUES (?, ?, ?, ?)",
+        [company, role, status, created_at, userId],
         (err, result) => {
             if (err) return res.status(500).json(err);
             res.json({ message: "Job added successfully", jobId: result.insertId });
@@ -36,7 +36,7 @@ router.put("/:id", authMiddleware, (req, res) => {
 
     db.query(
         "UPDATE jobs SET company = ?, role = ?, status = ? WHERE id = ? AND user_id = ?",
-        [company, role, status, jobId, userId],
+        [company, role, status, jobId, created_at, userId],
         (err, result) => {
             if (err) return res.status(500).json(err);
             if (result.affectedRows === 0) {
