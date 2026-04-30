@@ -3,6 +3,40 @@ const jwt = require("jsonwebtoken");
 const userRepository =
     require("../repositories/user.repository");
 
+exports.signup = async (data) => {
+    const {
+        username,
+        password,
+        dob,
+        address,
+        city,
+        state,
+        country
+    } = data;
+    const existingUser =
+        await userRepository.findByUsername(username);
+    if (existingUser) {
+        throw new Error("User already exists , please sign in");
+    }
+    const hashedPassword =
+        await bcrypt.hash(
+            password,
+            10
+        );
+    await userRepository.signup({
+        username,
+        password: hashedPassword,
+        dob,
+        address,
+        city,
+        state,
+        country
+    });
+    return {
+        message: "User registered successfully"
+    };
+};
+
 exports.login = async (data) => {
 
     const { username, password } = data;
@@ -94,3 +128,47 @@ exports.changePassword =
         };
 
     };
+
+
+exports.deleteAccount = async (userId) => {
+    const user =
+        await userRepository.findById(userId);
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+    await userRepository.deleteById(userId);
+    return {
+        message: "Account deleted successfully"
+    };
+}
+
+exports.updateProfile = async (userId, data) => {
+    const {
+        username, dob,
+        address,
+        city,
+        state,
+        country
+    } = data;
+    const user =
+        await userRepository.findById(userId);
+    if (!user) {
+        throw new Error("User not found");
+    }
+    await userRepository.updateProfile(userId, data);
+    const updatedUser =
+        await userRepository.findById(userId);
+    return {
+        message: "updated successfully",
+        user: {
+            id: updatedUser.id,
+            username: updatedUser.username,
+            dob: updatedUser.dob,
+            address: updatedUser.address,
+            city: updatedUser.city,
+            state: updatedUser.state,
+            country: updatedUser.country
+        }
+    }
+}
