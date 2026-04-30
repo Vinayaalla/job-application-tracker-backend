@@ -22,12 +22,12 @@ exports.createJob = async (userId, data) => {
 };
 
 exports.updateJob = async (jobId, userId, data) => {
-    const { company, role, status, created_at } = data;
+    const { company, role, status } = data;
 
     const result = await jobRepository.updateJob(
         jobId,
         userId,
-        { company, role, status, created_at }
+        { company, role, status }
     );
 
     if (result.affectedRows === 0) {
