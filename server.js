@@ -5,8 +5,8 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-    origin: "https://job-applicaton-tracker.vercel.app",
-    credentials: true
+    // origin: "https://job-applicaton-tracker.vercel.app",
+    // credentials: true
 }));
 app.use(express.json());
 const db = require("./db");
